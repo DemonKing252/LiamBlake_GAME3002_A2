@@ -21,7 +21,8 @@ public class PlungerController : MonoBehaviour
     private Vector3 velPreviousFrame = Vector3.zero; 
     private Vector3 worldPointRestPosition;
     private Vector3 worldPointMaximumRetraction;
-    
+    private bool inRestPos = false;
+    private float localYInclination;
     
     
     // Start is called before the first frame update
@@ -31,18 +32,20 @@ public class PlungerController : MonoBehaviour
         // its current position
 
         // given: theta and opposite:
-
         // tan(theta) = opp/adj
         // adj * tan(theta) = opp
-
         // opp = adj * tan(theta)
 
-        worldPointRestPosition.y = worldPointRestPosition.z * Mathf.Tan(worldTilt);
+        worldPointRestPosition.y = worldPointRestPosition.y * Mathf.Tan(worldTilt);
+        worldPointMaximumRetraction.y = worldPointMaximumRetraction.y * Mathf.Tan(-worldTilt);
+
 
         // World point of our rest position:
         worldPointRestPosition = transform.TransformPoint(restingPosition);
         worldPointMaximumRetraction = transform.TransformPoint(maximumRetraction);
 
+        // Ensure that the plunger stays on the same inclination:
+        localYInclination = transform.localPosition.y;
     }
 
     // Update is called once per frame
@@ -66,7 +69,7 @@ public class PlungerController : MonoBehaviour
             // 
             transform.position = Vector3.Lerp(transform.position, worldPointMaximumRetraction, Time.deltaTime);
         }
-        else
+        else if (inRestPos)
         {
             GetComponent<Rigidbody>().isKinematic = false;
         }
@@ -76,30 +79,41 @@ public class PlungerController : MonoBehaviour
     private void UpdateSpring()
     {
         
+
         if (transform.position.z <= worldPointRestPosition.z)
         {
+            // Keep the plunger on the same inclination.
+            // The ball collision has a tendancy to create resistance on the plunger ever so slightly that it moves its y position.
+            // Remember, I can't freeze the y position to fix this because the whole board is on an inclination so its y position is different
+            // with move.
+            Vector3 localP = transform.localPosition;
+            localP.y = localYInclination;
+            transform.localPosition = localP;
+
+
+            inRestPos = (transform.position.z + 0.1f <= worldPointRestPosition.z);
+        
             // To calculate displacement we need (xf - xi), which really can be calculated with distance
             // Need to convert this vector to world space first:
             float dist = (worldPointRestPosition - transform.position).magnitude;
-
-
+        
+        
             // Spring Force:
             // F = -k * x
             // Where k is the spring constant, and x is the displacement from the resting point of the spring
-
-
+        
+        
             // How do we calculate spring constant?
-            // k = F / x
-            // To calculate force, we need mass * gravity
-
+            // k = m * g / x
+        
             springConstant = GetComponent<Rigidbody>().mass * Physics.gravity.y / dist;
-
+        
             // with spring constant, we can calculate the required force:
             force = -springConstant * (worldPointRestPosition - transform.position);
-
+        
             // Damping = -b * (vNow - vPrev)
             force -= GetComponent<Rigidbody>().velocity - velPreviousFrame;
-
+        
             GetComponent<Rigidbody>().AddForce(force, ForceMode.Acceleration);
             velPreviousFrame = GetComponent<Rigidbody>().velocity;
         }
@@ -107,9 +121,10 @@ public class PlungerController : MonoBehaviour
         {
             // Alternate way of doing the spring top, rather than using a collider to stop the plunger,
             // I just zero its velocity, beacause I had issues where the plunger would shift its y position a bit putting it off centre
-            // This table is tilted 15 degrees so I can't freeze its y position! The plunger has to move parrelel to the ground!
-
+            // This table is tilted 15 degrees so I can't freeze its y position to solve that problem! The plunger has to move parrelel to the ground!
+        
             // Setup the spring for the next round
+        
             GetComponent<Rigidbody>().velocity = Vector3.zero;
             GetComponent<Rigidbody>().isKinematic = true;
         }
