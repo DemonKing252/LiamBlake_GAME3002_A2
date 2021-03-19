@@ -51,10 +51,21 @@ public class PlungerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        UpdateSpring();
         HandleUserInput();
-
+        UpdateSpring();
     }
+    void Update()
+    {
+        /// Since **freezing y-position** is not an option with a tilted board:
+        // Keep the plunger on the same inclination.
+        // The ball collision has a tendancy to create resistance on the plunger ever so slightly that it moves its y position.
+        // Remember, I can't freeze the y position to fix this because the whole board is on an inclination so its y position is different
+        // on any z-value in the world.
+        Vector3 localP = transform.localPosition;
+        localP.y = localYInclination;
+        transform.localPosition = localP;
+    }
+
     private void HandleUserInput()
     {
         if (Input.GetKeyDown(KeyCode.S))
@@ -78,18 +89,9 @@ public class PlungerController : MonoBehaviour
 
     private void UpdateSpring()
     {
-        
 
         if (transform.position.z <= worldPointRestPosition.z)
         {
-            // Keep the plunger on the same inclination.
-            // The ball collision has a tendancy to create resistance on the plunger ever so slightly that it moves its y position.
-            // Remember, I can't freeze the y position to fix this because the whole board is on an inclination so its y position is different
-            // with move.
-            Vector3 localP = transform.localPosition;
-            localP.y = localYInclination;
-            transform.localPosition = localP;
-
 
             inRestPos = (transform.position.z + 0.1f <= worldPointRestPosition.z);
         
@@ -128,6 +130,7 @@ public class PlungerController : MonoBehaviour
             GetComponent<Rigidbody>().velocity = Vector3.zero;
             GetComponent<Rigidbody>().isKinematic = true;
         }
+       
     }
 
     private void OnDrawGizmos()
