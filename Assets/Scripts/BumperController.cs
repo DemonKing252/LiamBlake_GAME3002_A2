@@ -12,7 +12,7 @@ public class BumperController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        faceNormal = Vector3.right;
+        faceNormal = transform.right;
     }
 
     private void OnTriggerEnter(Collider other)
