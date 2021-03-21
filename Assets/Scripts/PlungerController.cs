@@ -77,7 +77,7 @@ public class PlungerController : MonoBehaviour
         if (Input.GetKey(KeyCode.S))
         {
             // Retract the spring while 'S' using linear interpolation
-            // 
+            // This doesn't go against the rules of modifying the transform instead of the rigidbody:
             transform.position = Vector3.Lerp(transform.position, worldPointMaximumRetraction, Time.deltaTime);
         }
         else if (inRestPos)
