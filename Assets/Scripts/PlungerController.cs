@@ -19,34 +19,7 @@ public class PlungerController : MonoBehaviour
     private float springConstant = 0f;
 
     private Vector3 velPreviousFrame = Vector3.zero; 
-    private Vector3 worldPointRestPosition;
-    private Vector3 worldPointMaximumRetraction;
     private bool inRestPos = false;
-    private float localYInclination;
-    
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        // Since the whole board is tilted 15 degrees, we need to use trig to calculate the plungers ideal y rest position because it won't be the same as
-        // its current position
-
-        // given: theta and opposite:
-        // tan(theta) = opp/adj
-        // adj * tan(theta) = opp
-        // opp = adj * tan(theta)
-
-        worldPointRestPosition.y = worldPointRestPosition.y * Mathf.Tan(worldTilt);
-        worldPointMaximumRetraction.y = worldPointMaximumRetraction.y * Mathf.Tan(-worldTilt);
-
-
-        // World point of our rest position:
-        worldPointRestPosition = transform.TransformPoint(restingPosition);
-        worldPointMaximumRetraction = transform.TransformPoint(maximumRetraction);
-
-        // Ensure that the plunger stays on the same inclination:
-        localYInclination = transform.localPosition.y;
-    }
 
     // Update is called once per frame
     void FixedUpdate()
@@ -54,16 +27,18 @@ public class PlungerController : MonoBehaviour
         HandleUserInput();
         UpdateSpring();
     }
-    void Update()
+    private void Update()
     {
-        /// Since **freezing y-position** is not an option with a tilted board:
-        // Keep the plunger on the same inclination.
-        // The ball collision has a tendancy to create resistance on the plunger ever so slightly that it moves its y position.
-        // Remember, I can't freeze the y position to fix this because the whole board is on an inclination so its y position is different
-        // on any z-value in the world.
-        Vector3 localP = transform.localPosition;
-        localP.y = localYInclination;
-        transform.localPosition = localP;
+        // Plunger has a tendancy to get resistance from the pinball, putting its y position off from the correct
+        // inclination. Freezing the y position doesn't fix this issue since it acts a world point freeze and
+        // the board is tilted 10 degrees, so its y postion will be different with any z-value.
+        if (transform.localPosition.y != 0.0f)
+        {
+            Vector3 local = transform.localPosition;
+            local.y = 0f;
+            transform.localPosition = local;
+        }
+
     }
 
     private void HandleUserInput()
@@ -78,7 +53,8 @@ public class PlungerController : MonoBehaviour
         {
             // Retract the spring while 'S' using linear interpolation
             // This doesn't go against the rules of modifying the transform instead of the rigidbody:
-            transform.position = Vector3.Lerp(transform.position, worldPointMaximumRetraction, Time.deltaTime);
+
+            transform.localPosition = Vector3.Lerp(transform.localPosition, maximumRetraction, Time.deltaTime);
         }
         else if (inRestPos)
         {
@@ -89,17 +65,17 @@ public class PlungerController : MonoBehaviour
 
     private void UpdateSpring()
     {
-
-        if (transform.position.z <= worldPointRestPosition.z)
+        // Check if the plunger already passes the resting position:
+        if (transform.localPosition.z <= restingPosition.z)
         {
-
-            inRestPos = (transform.position.z + 0.1f <= worldPointRestPosition.z);
+        
+            inRestPos = (transform.localPosition.z + 0.1f <= restingPosition.z);
         
             // To calculate displacement we need (xf - xi), which really can be calculated with distance
             // Need to convert this vector to world space first:
-            float dist = (worldPointRestPosition - transform.position).magnitude;
+            float dist = (restingPosition - transform.localPosition).magnitude;
         
-        
+
             // Spring Force:
             // F = -k * x
             // Where k is the spring constant, and x is the displacement from the resting point of the spring
@@ -111,35 +87,30 @@ public class PlungerController : MonoBehaviour
             springConstant = GetComponent<Rigidbody>().mass * Physics.gravity.y / dist;
         
             // with spring constant, we can calculate the required force:
-            force = -springConstant * (worldPointRestPosition - transform.position);
-        
+            force = -springConstant * (restingPosition - transform.localPosition);
+            
             // Damping = -b * (vNow - vPrev)
             force -= GetComponent<Rigidbody>().velocity - velPreviousFrame;
-        
-            GetComponent<Rigidbody>().AddForce(force, ForceMode.Acceleration);
+            force.y = 0f;
+            print(force);
+
+            // Using relative force, since the y-position needs to be the same relative to the board inclination
+            GetComponent<Rigidbody>().AddRelativeForce(force, ForceMode.Acceleration);
             velPreviousFrame = GetComponent<Rigidbody>().velocity;
+
         }
         else
         {
+            /// Did the plunger pass the resting position? If so, stop it
+           
             // Alternate way of doing the spring top, rather than using a collider to stop the plunger,
-            // I just zero its velocity, beacause I had issues where the plunger would shift its y position a bit putting it off centre
             // This table is tilted 15 degrees so I can't freeze its y position to solve that problem! The plunger has to move parrelel to the ground!
         
             // Setup the spring for the next round
-        
             GetComponent<Rigidbody>().velocity = Vector3.zero;
             GetComponent<Rigidbody>().isKinematic = true;
         }
        
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(worldPointRestPosition, 0.5f);
-        
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, worldPointRestPosition);
-
-    }
 }
