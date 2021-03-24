@@ -43,13 +43,13 @@ public class PlungerController : MonoBehaviour
 
     private void HandleUserInput()
     {
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             // Spring forces will fight the plunger from retracting, so we need to turn kinematic off until we release the spring
             GetComponent<Rigidbody>().isKinematic = true;
         }
 
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.DownArrow))
         {
             // Retract the spring while 'S' using linear interpolation
             // This doesn't go against the rules of modifying the transform instead of the rigidbody:
