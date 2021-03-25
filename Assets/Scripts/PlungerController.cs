@@ -91,9 +91,7 @@ public class PlungerController : MonoBehaviour
             
             // Damping = -b * (vNow - vPrev)
             force -= GetComponent<Rigidbody>().velocity - velPreviousFrame;
-            force.y = 0f;
-            print(force);
-
+            
             // Using relative force, since the y-position needs to be the same relative to the board inclination
             GetComponent<Rigidbody>().AddRelativeForce(force, ForceMode.Acceleration);
             velPreviousFrame = GetComponent<Rigidbody>().velocity;
