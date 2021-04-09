@@ -14,7 +14,17 @@ public class BashToyController : MonoBehaviour
 
     [SerializeField]
     private float bashToyPower;
+
+    private Vector3 targetLerp = Vector3.one;
+
     
+
+    void Update()
+    {
+        print(transform.localScale.ToString());
+        transform.parent.localScale = Vector3.Lerp(transform.parent.localScale, targetLerp, Time.deltaTime * 90f);
+    }
+
     // The bash toy deflects velocity just like the regular bumpers do
     private void OnTriggerEnter(Collider other)
     {
@@ -22,10 +32,12 @@ public class BashToyController : MonoBehaviour
         // I mean what else what it be, but it's still good practice
         if (other.gameObject.CompareTag("PinBall"))
         {
+            print("hello");
             gameMngr.IncrementScore(scoreWorthy);
 
             transform.parent.GetComponent<MeshRenderer>().material.color = Color.green;
-            transform.parent.localScale = new Vector3(1.2f, 1.0f, 1.2f);
+            //transform.parent.localScale = new Vector3(1.2f, 1.0f, 1.2f);
+            targetLerp = new Vector3(1.2f, 1.0f, 1.2f);
 
             Vector3 inComingRay = other.gameObject.GetComponent<Rigidbody>().velocity;
 
@@ -44,13 +56,16 @@ public class BashToyController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("PinBall"))
         {
-            Invoke("OnResetBashToy", 0.5f);
+            transform.parent.GetComponent<MeshRenderer>().material.color = Color.yellow;
+            targetLerp = Vector3.one;
+            //Invoke("OnResetBashToy", 0.2f);
         }
     }
     private void OnResetBashToy()
     {
-        transform.parent.GetComponent<MeshRenderer>().material.color = Color.yellow;
-        transform.parent.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+       
+
+        //transform.parent.localScale = new Vector3(1.0f, 1.0f, 1.0f);
     }
 
     private void OnDrawGizmos()
@@ -69,4 +84,5 @@ public class BashToyController : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(transform.position, transform.TransformPoint(r));
     }
+    
 }

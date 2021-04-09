@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
 
         // Respawn pinball above the plunger:
         pinball.transform.position = pinballRespawnPoint.position;
+        pinball.GetComponent<Rigidbody>().velocity = Vector3.zero;  // Lose all momentum
 
         // Lose scene here eventually:
         if (balls <= 0)
