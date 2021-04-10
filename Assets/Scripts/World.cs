@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class World : MonoBehaviour
 {
+    [SerializeField]
+    AudioSource theme;
+
+    private void Start()
+    {
+        theme.Play();
+    }
+
     [SerializeField] private Transform respawnPoint;
     private void OnTriggerExit(Collider other)
     {
