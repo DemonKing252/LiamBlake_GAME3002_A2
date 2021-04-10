@@ -1178,7 +1178,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3202635054738916413, guid: 600515b2f2631c944b06343abf21d44d, type: 3}
       propertyPath: m_Size.x
-      value: 0.2
+      value: 0.33
       objectReference: {fileID: 0}
     - target: {fileID: 3202635054738916413, guid: 600515b2f2631c944b06343abf21d44d, type: 3}
       propertyPath: m_Size.y
@@ -1190,7 +1190,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3202635054738916413, guid: 600515b2f2631c944b06343abf21d44d, type: 3}
       propertyPath: m_Center.x
-      value: 0.86
+      value: 0.92
       objectReference: {fileID: 0}
     - target: {fileID: 3202635054738916413, guid: 600515b2f2631c944b06343abf21d44d, type: 3}
       propertyPath: m_IsTrigger
@@ -2814,7 +2814,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameMngr: {fileID: 2032498305}
   scoreWorthy: 90
-  bashToyPower: 2
+  bashToyPower: 1.5
 --- !u!64 &661796529
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3041,7 +3041,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a1393f6092daea45bb7a1f25cb5faa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  power: 2
+  power: 1.5
   gameMngr: {fileID: 2032498305}
   scoreWorthy: 30
 --- !u!64 &785412434
@@ -5065,7 +5065,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a1393f6092daea45bb7a1f25cb5faa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  power: 2
+  power: 1.5
   gameMngr: {fileID: 2032498305}
   scoreWorthy: 30
 --- !u!64 &1426805952
@@ -5126,7 +5126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a1393f6092daea45bb7a1f25cb5faa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  power: 2
+  power: 1.5
   gameMngr: {fileID: 2032498305}
   scoreWorthy: 30
 --- !u!64 &1437043940
@@ -5274,7 +5274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a1393f6092daea45bb7a1f25cb5faa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  power: 2
+  power: 1.5
   gameMngr: {fileID: 2032498305}
   scoreWorthy: 30
 --- !u!1 &1493673460
@@ -7769,7 +7769,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3202635054738916413, guid: 600515b2f2631c944b06343abf21d44d, type: 3}
       propertyPath: m_Size.x
-      value: 0.2
+      value: 0.33
       objectReference: {fileID: 0}
     - target: {fileID: 3202635054738916413, guid: 600515b2f2631c944b06343abf21d44d, type: 3}
       propertyPath: m_Size.y
@@ -7781,7 +7781,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3202635054738916413, guid: 600515b2f2631c944b06343abf21d44d, type: 3}
       propertyPath: m_Center.x
-      value: 0.86
+      value: 0.92
       objectReference: {fileID: 0}
     - target: {fileID: 3202635054738916413, guid: 600515b2f2631c944b06343abf21d44d, type: 3}
       propertyPath: m_IsTrigger
