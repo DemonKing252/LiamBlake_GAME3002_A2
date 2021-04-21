@@ -17,8 +17,6 @@ public class BashToyController : MonoBehaviour
 
     private Vector3 targetLerp = Vector3.one;
 
-    
-
     void Update()
     {
         print(transform.localScale.ToString());
@@ -57,22 +55,14 @@ public class BashToyController : MonoBehaviour
         if (other.gameObject.CompareTag("PinBall"))
         {
             transform.parent.GetComponent<MeshRenderer>().material.color = Color.yellow;
-            targetLerp = Vector3.one;
-            //Invoke("OnResetBashToy", 0.2f);
+            targetLerp = Vector3.one;         
         }
-    }
-    private void OnResetBashToy()
-    {
-       
-
-        //transform.parent.localScale = new Vector3(1.0f, 1.0f, 1.0f);
     }
 
     private void OnDrawGizmos()
     {
         Vector3 normal = GameObject.FindGameObjectWithTag("PinBall").transform.position - transform.position;
-        //print(normal);
-        normal.Normalize();
+         normal.Normalize();
 
         Gizmos.color = Color.green;
         Gizmos.DrawLine(transform.position, transform.TransformPoint(normal));

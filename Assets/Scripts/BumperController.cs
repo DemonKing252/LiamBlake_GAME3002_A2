@@ -45,7 +45,7 @@ public class BumperController : MonoBehaviour
                 gameMngr.IncrementScore(scoreWorthy);
             }
             // 20% bigger:
-            targetLerp = new Vector3(1f * 1.2f, 2f, 3f * 1.2f);
+            targetLerp = new Vector3(1f * 1.1f, 2f, 3f * 1.1f);
 
             transform.FindChild("Mesh").GetComponent<Renderer>().material.color = Color.green;
             // Reflect the balls velocity using the normal vector 

@@ -2163,7 +2163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameMngr: {fileID: 2032498305}
-  bumperPower: 2
+  bumperPower: 1.5
   scoreWorthy: 15
 --- !u!1 &509740845
 GameObject:
@@ -3220,7 +3220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameMngr: {fileID: 2032498305}
-  bumperPower: 2
+  bumperPower: 1.5
   scoreWorthy: 15
 --- !u!1 &963194225
 GameObject:
