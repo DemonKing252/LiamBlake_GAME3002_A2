@@ -19,7 +19,7 @@ public class BashToyController : MonoBehaviour
 
     void Update()
     {
-        print(transform.localScale.ToString());
+        //print(transform.localScale.ToString());
         transform.parent.localScale = Vector3.Lerp(transform.parent.localScale, targetLerp, Time.deltaTime * 90f);
     }
 
@@ -45,7 +45,11 @@ public class BashToyController : MonoBehaviour
             // Reflect goes here, just like the bumper:
             Vector3 reflectedVel = Vector3.Reflect(inComingRay, normal);
 
-            other.gameObject.GetComponent<Rigidbody>().velocity = reflectedVel * bashToyPower;
+
+            Vector3 clampedVel = reflectedVel * bashToyPower;
+            clampedVel = Vector3.ClampMagnitude(clampedVel, FindObjectOfType<GameManager>().frontBumpers);
+
+            other.gameObject.GetComponent<Rigidbody>().velocity = clampedVel;
 
 
         }

@@ -44,10 +44,15 @@ public class NonactiveControllerScript : MonoBehaviour
             Vector3 normal = other.transform.position - transform.position;
             normal.Normalize();
 
-            // Reflect goes here, just like the bumper:
-            Vector3 reflectedVel = Vector3.Reflect(inComingRay, normal);
 
-            other.gameObject.GetComponent<Rigidbody>().velocity = reflectedVel * power;
+            Vector3 clampedVel = inComingRay * power;
+            clampedVel = Vector3.ClampMagnitude(clampedVel, FindObjectOfType<GameManager>().frontBumpers);
+
+            print("Clamped: " + clampedVel.magnitude);
+            // Reflect goes here, just like the bumper:
+            Vector3 reflectedVel = Vector3.Reflect(clampedVel, normal);
+
+            other.gameObject.GetComponent<Rigidbody>().velocity = reflectedVel;
 
 
         }

@@ -7,6 +7,18 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Bumper Properties")]
+    [SerializeField]
+    public float frontBumpers = 20f;
+
+    [SerializeField]
+    public float backBumpers = 20f;
+
+    [Space(2)]
+
+
+    [Header("Game Management")]
+
     [SerializeField]
     private GameObject gameOverCanvas;
 
@@ -30,9 +42,15 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private int score;
 
+    [SerializeField]
+    private AudioSource m_mainTheme;
+
+
 
     private void Start()
     {
+        m_mainTheme.volume = GameSingleton.desiredMaster;
+        m_mainTheme.Play();
 
         Time.timeScale = 1f;
         if (Utilities.scenesChanged == 0)

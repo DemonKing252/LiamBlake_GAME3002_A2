@@ -64,8 +64,9 @@ public class BumperController : MonoBehaviour
             // Set the balls velocity to what it was originally, but now its reflected 
             // AND since this is a bumper has a bounce force, we multiply that vector 
             // by the bumper power
-            
-            other.gameObject.GetComponent<Rigidbody>().velocity = reflectedVelocity * bumperPower;
+            Vector3 clampedVel = reflectedVelocity * bumperPower;
+            clampedVel = Vector3.ClampMagnitude(clampedVel, FindObjectOfType<GameManager>().backBumpers);
+            other.gameObject.GetComponent<Rigidbody>().velocity = clampedVel;
 
         }
 
