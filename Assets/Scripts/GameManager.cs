@@ -16,6 +16,16 @@ public class GameManager : MonoBehaviour
 
     [Space(2)]
 
+    [Header("Post Rendering Materials")]
+
+    [SerializeField]
+    public Material inactiveBumper_Def;
+
+    [SerializeField]
+    public Material inactiveBumper_Exp;
+
+
+    [Space(2)]
 
     [Header("Game Management")]
 

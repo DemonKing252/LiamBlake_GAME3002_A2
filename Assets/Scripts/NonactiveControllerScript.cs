@@ -35,7 +35,7 @@ public class NonactiveControllerScript : MonoBehaviour
                 gameMngr.IncrementScore(scoreWorthy);
             }
 
-            transform.parent.GetComponent<MeshRenderer>().material.color = Color.blue;
+            transform.parent.GetComponent<MeshRenderer>().material = FindObjectOfType<GameManager>().inactiveBumper_Exp;
             //transform.parent.localScale = new Vector3(1.2f, 1.0f, 1.2f);
             targetLerp = new Vector3(1.2f, 1.0f, 1.2f);
 
@@ -61,7 +61,7 @@ public class NonactiveControllerScript : MonoBehaviour
     {
         if (other.gameObject.CompareTag("PinBall"))
         {
-            transform.parent.GetComponent<MeshRenderer>().material.color = Color.red;
+            transform.parent.GetComponent<MeshRenderer>().material = FindObjectOfType<GameManager>().inactiveBumper_Def;
             targetLerp = Vector3.one;
             //Invoke("OnResetBashToy", 0.2f);
         }
