@@ -7,6 +7,5 @@ public class VolumeController : MonoBehaviour
     public void _OnMasterChanged(float newVal)
     {
         GameSingleton.desiredMaster = newVal;
-        print(newVal);
     }
 }

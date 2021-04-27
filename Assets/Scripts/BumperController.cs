@@ -26,7 +26,7 @@ public class BumperController : MonoBehaviour
     [System.Obsolete]
     void Update()
     {
-        transform.FindChild("Mesh").transform.localScale = Vector3.Lerp(transform.FindChild("Mesh").transform.localScale, targetLerp, Time.deltaTime * 90f);
+        //transform.FindChild("Mesh").transform.localScale = Vector3.Lerp(transform.FindChild("Mesh").transform.localScale, targetLerp, Time.deltaTime * 90f);
     }
 
     [System.Obsolete]
@@ -45,9 +45,9 @@ public class BumperController : MonoBehaviour
                 gameMngr.IncrementScore(scoreWorthy);
             }
             // 20% bigger:
-            targetLerp = new Vector3(1f * 1.1f, 2f, 3f * 1.1f);
+            //targetLerp = new Vector3(1f * 1.1f, 2f, 3f * 1.1f);
 
-            transform.FindChild("Mesh").GetComponent<Renderer>().material.color = Color.green;
+            transform.FindChild("Mesh").GetComponent<MeshRenderer>().material = FindObjectOfType<GameManager>().inactiveBumper_Exp;
             // Reflect the balls velocity using the normal vector 
 
             // Need to rotate the ball velocity vector with respect of the bumpers rotation, otherwise
@@ -68,17 +68,23 @@ public class BumperController : MonoBehaviour
             clampedVel = Vector3.ClampMagnitude(clampedVel, FindObjectOfType<GameManager>().backBumpers);
             other.gameObject.GetComponent<Rigidbody>().velocity = clampedVel;
 
+            //Invoke("_OnExpand", 0.2f);
         }
 
 
     }
+
+    //public void _OnExpand()
+    //{
+    //    targetLerp = new Vector3(1f * 1.1f, 2f, 3f * 1.1f);
+    //}
     [System.Obsolete]
     private void OnTriggerExit(Collider collision)
     {
         if (collision.gameObject.CompareTag("PinBall"))
         {
-            targetLerp = new Vector3(1f, 2f, 3f);
-            transform.FindChild("Mesh").GetComponent<Renderer>().material.color = Color.yellow;
+            //targetLerp = new Vector3(1f, 2f, 3f);
+            transform.FindChild("Mesh").GetComponent<MeshRenderer>().material = FindObjectOfType<GameManager>().activeBumper_Def;
         }
     }
     private void OnDrawGizmos()

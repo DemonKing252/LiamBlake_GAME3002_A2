@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     public Material inactiveBumper_Exp;
 
+    [SerializeField]
+    public Material activeBumper_Def;
+
 
     [Space(2)]
 
@@ -55,11 +58,54 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private AudioSource m_mainTheme;
 
+    private GameObject[,] triangleAnimator = new GameObject[2,6];
 
+    [SerializeField]
+    private Material triangleMat;
+
+    [SerializeField]
+    private Material triangleOffMat;
+
+
+    private int index = 0;
+
+    IEnumerator _TurnOff(float delay, int triangleIndex)
+    {
+        yield return new WaitForSeconds(delay);
+
+        triangleAnimator[0, triangleIndex].GetComponent<MeshRenderer>().material = triangleOffMat;
+        triangleAnimator[1, triangleIndex].GetComponent<MeshRenderer>().material = triangleOffMat;
+    }
+
+    public void _SetStateOn()
+    {
+        StartCoroutine(_TurnOff(0.25f, index));
+
+        triangleAnimator[0, index].GetComponent<MeshRenderer>().material = triangleMat;
+        triangleAnimator[1, index].GetComponent<MeshRenderer>().material = triangleMat;
+
+        index++;
+        if (index >= 6)
+            index = 0;
+
+    }
+    private void Update()
+    {
+        //TODO: Find a better way to fix this
+        m_mainTheme.volume = GameSingleton.desiredMaster;
+    }
 
     private void Start()
     {
-        m_mainTheme.volume = GameSingleton.desiredMaster;
+
+        for(int i = 0; i < 6; i++)
+        {
+            triangleAnimator[0, i] = GameObject.FindGameObjectsWithTag("TriangleAnimator")[i];
+            triangleAnimator[1, i] = GameObject.FindGameObjectsWithTag("TriangleAnimator2")[i];
+        }
+
+        InvokeRepeating("_SetStateOn", 0f, 0.25f);
+
         m_mainTheme.Play();
 
         Time.timeScale = 1f;
