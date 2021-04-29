@@ -14,19 +14,10 @@ public class BumperController : MonoBehaviour
     private int scoreWorthy;
 
     private Vector3 faceNormal;
-    private Vector3 targetLerp = new Vector3(1f, 2f, 3f);
-
-
     // Start is called before the first frame update
     void Start()
     {
         faceNormal = transform.right;
-    }
-
-    [System.Obsolete]
-    void Update()
-    {
-        //transform.FindChild("Mesh").transform.localScale = Vector3.Lerp(transform.FindChild("Mesh").transform.localScale, targetLerp, Time.deltaTime * 90f);
     }
 
     [System.Obsolete]
@@ -44,9 +35,8 @@ public class BumperController : MonoBehaviour
             {
                 gameMngr.IncrementScore(scoreWorthy);
             }
-            // 20% bigger:
-            //targetLerp = new Vector3(1f * 1.1f, 2f, 3f * 1.1f);
 
+            FindObjectOfType<GameManager>().triangleBumperSfx.Play();
             transform.FindChild("Mesh").GetComponent<MeshRenderer>().material = FindObjectOfType<GameManager>().inactiveBumper_Exp;
             // Reflect the balls velocity using the normal vector 
 
@@ -54,9 +44,9 @@ public class BumperController : MonoBehaviour
             // it will reflect it the wrong way (if its rotated 30 degrees on y for example), the vector will 
             // appear to be rotated 30 degrees the opposite way, which will deflect it the wrong way.
 
-
             // Incoming velocity
             Vector3 incomingRay = other.gameObject.GetComponent<Rigidbody>().velocity;
+            other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
             // Reflect the incoming ray with the face normal
             Vector3 reflectedVelocity = Vector3.Reflect(incomingRay, faceNormal);
@@ -68,22 +58,15 @@ public class BumperController : MonoBehaviour
             clampedVel = Vector3.ClampMagnitude(clampedVel, FindObjectOfType<GameManager>().backBumpers);
             other.gameObject.GetComponent<Rigidbody>().velocity = clampedVel;
 
-            //Invoke("_OnExpand", 0.2f);
         }
 
 
     }
-
-    //public void _OnExpand()
-    //{
-    //    targetLerp = new Vector3(1f * 1.1f, 2f, 3f * 1.1f);
-    //}
     [System.Obsolete]
     private void OnTriggerExit(Collider collision)
     {
         if (collision.gameObject.CompareTag("PinBall"))
         {
-            //targetLerp = new Vector3(1f, 2f, 3f);
             transform.FindChild("Mesh").GetComponent<MeshRenderer>().material = FindObjectOfType<GameManager>().activeBumper_Def;
         }
     }

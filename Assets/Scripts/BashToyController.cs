@@ -15,14 +15,6 @@ public class BashToyController : MonoBehaviour
     [SerializeField]
     private float bashToyPower;
 
-    private Vector3 targetLerp = Vector3.one;
-
-    void Update()
-    {
-        //print(transform.localScale.ToString());
-        //transform.parent.localScale = Vector3.Lerp(transform.parent.localScale, targetLerp, Time.deltaTime * 90f);
-    }
-
     // The bash toy deflects velocity just like the regular bumpers do
     private void OnTriggerEnter(Collider other)
     {
@@ -30,14 +22,14 @@ public class BashToyController : MonoBehaviour
         // I mean what else what it be, but it's still good practice
         if (other.gameObject.CompareTag("PinBall"))
         {
-            //print("hello");
+
+            FindObjectOfType<GameManager>().outerBumperSfx.Play();
             gameMngr.IncrementScore(scoreWorthy);
 
             transform.parent.GetComponent<MeshRenderer>().material = FindObjectOfType<GameManager>().inactiveBumper_Exp;
-            //transform.parent.localScale = new Vector3(1.2f, 1.0f, 1.2f);
-            //targetLerp = new Vector3(1.2f, 1.0f, 1.2f);
 
             Vector3 inComingRay = other.gameObject.GetComponent<Rigidbody>().velocity;
+            other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
             Vector3 normal = other.transform.position - transform.position;
             normal.Normalize();
@@ -51,20 +43,14 @@ public class BashToyController : MonoBehaviour
 
             other.gameObject.GetComponent<Rigidbody>().velocity = clampedVel;
 
-            //Invoke("_OnExpand", 0.2f);
         }
     }
 
-    public void _OnExpand()
-    {
-        //targetLerp = new Vector3(1.2f, 1.0f, 1.2f);
-    }
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("PinBall"))
         {
-            transform.parent.GetComponent<MeshRenderer>().material = FindObjectOfType<GameManager>().activeBumper_Def;
-            targetLerp = Vector3.one;         
+            transform.parent.GetComponent<MeshRenderer>().material = FindObjectOfType<GameManager>().activeBumper_Def;     
         }
     }
 

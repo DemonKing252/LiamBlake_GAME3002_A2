@@ -42,6 +42,7 @@ public class FlipperController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
+            FindObjectOfType<GameManager>().flipperSfx.Play();
             leftFlipperJoint.targetPosition = targetRotation;
             leftFlipper.GetComponent<HingeJoint>().spring = leftFlipperJoint;
         }
@@ -53,6 +54,7 @@ public class FlipperController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
+            FindObjectOfType<GameManager>().flipperSfx.Play();
             rightFlipperJoint.targetPosition = targetRotation;
             rightFlipper.GetComponent<HingeJoint>().spring = rightFlipperJoint;
         }

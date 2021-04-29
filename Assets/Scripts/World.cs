@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class World : MonoBehaviour
 {
-    
-    private void Start()
-    {
-
-    }
 
     [SerializeField] private Transform respawnPoint;
     private void OnTriggerExit(Collider other)

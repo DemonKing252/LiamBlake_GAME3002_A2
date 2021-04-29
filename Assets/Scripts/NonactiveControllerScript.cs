@@ -17,11 +17,13 @@ public class NonactiveControllerScript : MonoBehaviour
     [SerializeField]
     private int scoreWorthy;
 
-    private Vector3 targetLerp = Vector3.one;
 
-    private void Update()
+    private void OnCollisionEnter(Collision collision)
     {
-        //transform.parent.localScale = Vector3.Lerp(transform.parent.localScale, targetLerp, Time.deltaTime * 90f);
+        if (collision.gameObject.CompareTag("PinBall"))
+        {
+            print("GOOD");
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -30,6 +32,8 @@ public class NonactiveControllerScript : MonoBehaviour
         // I mean what else what it be, but it's still good practice
         if (other.gameObject.CompareTag("PinBall"))
         {
+            FindObjectOfType<GameManager>().outerBumperSfx.Play();
+
             if (gameMngr != null)
             {
                 gameMngr.IncrementScore(scoreWorthy);
@@ -39,6 +43,7 @@ public class NonactiveControllerScript : MonoBehaviour
             //transform.parent.localScale = new Vector3(1.2f, 1.0f, 1.2f);
 
             Vector3 inComingRay = other.gameObject.GetComponent<Rigidbody>().velocity;
+            other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
             Vector3 normal = other.transform.position - transform.position;
             normal.Normalize();
@@ -52,20 +57,13 @@ public class NonactiveControllerScript : MonoBehaviour
 
             other.gameObject.GetComponent<Rigidbody>().velocity = reflectedVel;
 
-            //Invoke("_OnExpand", 0.2f);
         }
-    }
-    public void _OnExpand()
-    {
-        targetLerp = new Vector3(1.2f, 1.0f, 1.2f);
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("PinBall"))
         {
             transform.parent.GetComponent<MeshRenderer>().material = FindObjectOfType<GameManager>().inactiveBumper_Def;
-            targetLerp = Vector3.one;
-            //Invoke("OnResetBashToy", 0.2f);
         }
     }
 

@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
 
     [Space(2)]
 
-    [Header("Post Rendering Materials")]
+    [Header("Post Processing Materials")]
 
     [SerializeField]
     public Material inactiveBumper_Def;
@@ -26,6 +26,18 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     public Material activeBumper_Def;
+
+    [Space(2)]
+    [Header("Sound effects")]
+
+    [SerializeField]
+    public AudioSource flipperSfx;
+
+    [SerializeField]
+    public AudioSource triangleBumperSfx;
+
+    [SerializeField]
+    public AudioSource outerBumperSfx;
 
 
     [Space(2)]
@@ -88,11 +100,6 @@ public class GameManager : MonoBehaviour
         if (index >= 6)
             index = 0;
 
-    }
-    private void Update()
-    {
-        //TODO: Find a better way to fix this
-        m_mainTheme.volume = GameSingleton.desiredMaster;
     }
 
     private void Start()
