@@ -49,7 +49,8 @@ public class BumperController : MonoBehaviour
             other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
             // Reflect the incoming ray with the face normal
-            Vector3 reflectedVelocity = Vector3.Reflect(incomingRay, faceNormal);
+            Vector3 reflectedVelocity = Vector3.Reflect(incomingRay.normalized, faceNormal);
+            reflectedVelocity *= FindObjectOfType<GameManager>().backBumpers;
 
             // Set the balls velocity to what it was originally, but now its reflected 
             // AND since this is a bumper has a bounce force, we multiply that vector 

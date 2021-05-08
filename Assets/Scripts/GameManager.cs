@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour
 
     public void _SetStateOn()
     {
-        StartCoroutine(_TurnOff(0.25f, index));
+        StartCoroutine(_TurnOff(0.125f, index));
 
         triangleAnimator[0, index].GetComponent<MeshRenderer>().material = triangleMat;
         triangleAnimator[1, index].GetComponent<MeshRenderer>().material = triangleMat;
@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour
             triangleAnimator[1, i] = GameObject.FindGameObjectsWithTag("TriangleAnimator2")[i];
         }
 
-        InvokeRepeating("_SetStateOn", 0f, 0.25f);
+        InvokeRepeating("_SetStateOn", 0f, 0.125f);
 
         m_mainTheme.Play();
 
